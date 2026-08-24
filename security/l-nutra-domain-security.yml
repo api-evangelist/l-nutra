@@ -1,0 +1,34 @@
+generated: '2026-08-23'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: prolonlife.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 10 04:42:02 2026 GMT
+  hsts: true
+  hsts_max_age: 7889238
+- host: l-nutrahealth.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  9 03:09:01 2026 GMT
+  hsts: true
+  hsts_max_age: 7889238
+- host: l-nutraprofessional.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  6 03:45:32 2026 GMT
+  hsts: true
+  hsts_max_age: 7889238
+domains:
+- domain: prolonlife.com
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false
+- domain: l-nutrahealth.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

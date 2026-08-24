@@ -1,0 +1,33 @@
+generated: '2026-08-23'
+method: probed
+source: https://prolonlife.com/.well-known/openid-configuration
+description: >-
+  The only OAuth scopes L-Nutra advertises come from the Shopify customer-accounts OIDC discovery
+  document served on each storefront. They govern a shopper signing into their own account, not a
+  developer integration — there is no public client registration, so no third party can request
+  them. Recorded verbatim from scopes_supported; L-Nutra publishes no scopes reference page of its
+  own. The MCP endpoints themselves require no scope at all.
+authorization_server: https://shopify.com/authentication/<shop-id>
+docs: null
+docs_note: No provider-published scope or permission reference exists.
+scopes:
+- name: openid
+  description: Standard OpenID Connect scope — request an ID token for the signed-in customer.
+  source: openid-configuration scopes_supported
+- name: email
+  description: Release the customer's email address and email_verified claim.
+  source: openid-configuration scopes_supported
+- name: 'customer-account-api:full'
+  description: >-
+    Full access to the Shopify Customer Account API for the signed-in customer — their orders,
+    addresses, subscriptions and profile.
+  source: openid-configuration scopes_supported
+- name: 'customer-account-mcp-api:full'
+  description: >-
+    Full access to the Shopify Customer Account MCP API for the signed-in customer. This is the
+    authenticated, per-customer MCP surface, distinct from the anonymous storefront UCP endpoint.
+  source: openid-configuration scopes_supported
+hosts:
+- https://prolonlife.com
+- https://l-nutrahealth.com
+- https://l-nutraprofessional.com

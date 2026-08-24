@@ -1,0 +1,107 @@
+generated: '2026-08-23'
+method: probed
+source: probed 2026-08-23 with curl against every host named in apis.yml
+description: >-
+  Results of probing /.well-known/ on every L-Nutra host. The corporate site l-nutra.com is a
+  WordPress install on Flywheel that returned HTTP 500 for every page requested on 2026-08-23,
+  including its own home page — its /.well-known/ paths still resolve to 404 through the edge.
+  The three Shopify storefronts each serve three real documents: OpenID Connect discovery and
+  OAuth 2.0 authorization-server metadata for Shopify customer accounts (issuer
+  https://shopify.com/authentication/<shop-id>, endpoints on account.<storefront-domain>), and a
+  Universal Commerce Protocol merchant profile at /.well-known/ucp naming the shop's MCP endpoint.
+  No security.txt, api-catalog, ai-plugin.json, agent-card.json or agent.json anywhere.
+hosts:
+- host: https://prolonlife.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    type: application/json
+    file: l-nutra-prolonlife-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    type: application/json
+    file: l-nutra-prolonlife-oauth-authorization-server.json
+  - path: /.well-known/ucp
+    status: 200
+    type: application/json
+    file: l-nutra-prolonlife-ucp.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://l-nutrahealth.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutrahealth-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutrahealth-oauth-authorization-server.json
+  - path: /.well-known/ucp
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutrahealth-ucp.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://l-nutraprofessional.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutraprofessional-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutraprofessional-oauth-authorization-server.json
+  - path: /.well-known/ucp
+    status: 200
+    type: application/json
+    file: l-nutra-l-nutraprofessional-ucp.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://l-nutra.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  note: >-
+    Every non-.well-known path on this host returned HTTP 500 (WordPress fatal error, server
+    Flywheel/5.1.0), including https://l-nutra.com/ itself.
+notes:
+- No security.txt is served on any host, so no SecurityTxt pointer is emitted.
+- No agent card was found on any host, so no a2a/ artifact and no AgentCard pointer were written.

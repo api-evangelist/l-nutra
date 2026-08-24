@@ -1,18 +1,103 @@
 aid: l-nutra
 name: L-Nutra
-description: 'L-Nutra is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  L-Nutra, Inc. is a Los Angeles based nutri-technology company founded on the fasting-mimicking
+  diet (FMD) research of Dr. Valter Longo at the USC Longevity Institute. It develops and sells
+  clinically studied nutrition programs — the ProLon 5-Day Fasting Mimicking Diet, Fast Bar and
+  related longevity nutrition products — direct to consumers, to healthcare providers, and through
+  an employer and health-plan channel. L-Nutra is not a developer-platform company and publishes no
+  developer portal, OpenAPI description or API reference of its own. Its machine-readable surface is
+  the agentic-commerce layer of its three Shopify storefronts (prolonlife.com, l-nutrahealth.com and
+  l-nutraprofessional.com): each serves an llms.txt / agents.md agent instruction document, a
+  Universal Commerce Protocol (UCP) discovery profile at /.well-known/ucp, an anonymous MCP endpoint
+  at /api/ucp/mcp exposing thirteen catalog, cart, checkout and order tools, a Shopify Storefront MCP
+  endpoint at /api/mcp, and Shopify customer-account OpenID Connect discovery documents.
+image: https://prolonlife.com/cdn/shop/files/Prolon_Icon_light_green.png
 url: https://raw.githubusercontent.com/api-evangelist/l-nutra/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-23'
 modified: '2026-08-23'
 tags:
 - Company
-apis: []
+- Nutrition
+- Health
+- Longevity
+- Consumer Products
+- E-Commerce
+- Agentic Commerce
+- Universal Commerce Protocol
+- Model Context Protocol
+- Shopify
+apis:
+- name: ProLon Life Agentic Commerce (UCP/MCP)
+  description: >-
+    The agent-facing commerce surface of L-Nutra's direct-to-consumer ProLon storefront. An anonymous
+    MCP endpoint at https://prolonlife.com/api/ucp/mcp implements Universal Commerce Protocol
+    2026-04-08 and returns thirteen tools (search_catalog, lookup_catalog, get_product, create/get/
+    update/cancel_cart, create/get/update/cancel/complete_checkout, get_order) with full JSON Schema
+    2020-12 input schemas. A second Shopify Storefront MCP endpoint at /api/mcp exposes five tools.
+    Checkout completion requires contemporaneous human approval; the store's own robots.txt and
+    llms.txt say so explicitly.
+  humanURL: https://prolonlife.com/agents.md
+  baseURL: https://prolonlife.com
+  tags:
+  - Agentic Commerce
+  - Model Context Protocol
+  - Universal Commerce Protocol
+  - E-Commerce
+  properties:
+  - type: MCPServer
+    url: mcp/l-nutra-mcp.yml
+  - type: LLMsTxt
+    url: llms/l-nutra-llms.txt
+  - type: Documentation
+    url: https://prolonlife.com/agents.md
+  - type: TermsOfService
+    url: https://prolonlife.com/policies/terms-of-service
+  - type: PrivacyPolicy
+    url: https://prolonlife.com/policies/privacy-policy
+- name: L-Nutra Health Agentic Commerce (UCP/MCP)
+  description: >-
+    The agent-facing commerce surface of L-Nutra Health, the employer / health-plan channel storefront.
+    An anonymous MCP endpoint at https://l-nutrahealth.com/api/ucp/mcp implements Universal Commerce
+    Protocol 2026-04-08 with the same thirteen UCP tools. Its Shopify Storefront MCP endpoint at
+    /api/mcp is configured more narrowly and returns only search_shop_policies_and_faqs.
+  humanURL: https://l-nutrahealth.com/agents.md
+  baseURL: https://l-nutrahealth.com
+  tags:
+  - Agentic Commerce
+  - Model Context Protocol
+  - Universal Commerce Protocol
+  - Health
+  properties:
+  - type: MCPServer
+    url: mcp/l-nutra-mcp.yml
+  - type: Documentation
+    url: https://l-nutrahealth.com/agents.md
+  - type: TermsOfService
+    url: https://l-nutrahealth.com/policies/terms-of-service
+  - type: PrivacyPolicy
+    url: https://l-nutrahealth.com/policies/privacy-policy
+- name: ProLon Professional Agentic Commerce (UCP/MCP)
+  description: >-
+    The agent-facing commerce surface of L-Nutra Professional, the practitioner ordering storefront.
+    An anonymous MCP endpoint at https://l-nutraprofessional.com/api/ucp/mcp implements Universal
+    Commerce Protocol 2026-04-08 with the same thirteen UCP tools. This storefront publishes no
+    /policies/* documents; its Shopify Storefront MCP endpoint returns only search_shop_policies_and_faqs.
+  humanURL: https://l-nutraprofessional.com/agents.md
+  baseURL: https://l-nutraprofessional.com
+  tags:
+  - Agentic Commerce
+  - Model Context Protocol
+  - Universal Commerce Protocol
+  - Healthcare Providers
+  properties:
+  - type: MCPServer
+    url: mcp/l-nutra-mcp.yml
+  - type: Documentation
+    url: https://l-nutraprofessional.com/agents.md
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +105,54 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/l-nutra_stock/
+  url: https://prolonlife.com/
+- type: Documentation
+  url: https://prolonlife.com/agents.md
+- type: Support
+  url: https://prolonlife.com/pages/faqs
+- type: Pricing
+  url: https://prolonlife.com/collections/all
+- type: SignUp
+  url: https://prolonlife.com/account/login
+- type: TermsOfService
+  url: https://prolonlife.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://prolonlife.com/policies/privacy-policy
+- type: MCPServer
+  url: mcp/l-nutra-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/l-nutra-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/l-nutra-llms.txt
+- type: WellKnown
+  url: well-known/l-nutra-well-known.yml
+- type: Authentication
+  url: authentication/l-nutra-authentication.yml
+- type: OAuthScopes
+  url: scopes/l-nutra-scopes.yml
+- type: Conformance
+  url: conformance/l-nutra-conformance.yml
+- type: Conventions
+  url: conventions/l-nutra-conventions.yml
+- type: Idempotency
+  url: conventions/l-nutra-conventions.yml
+- type: Lifecycle
+  url: lifecycle/l-nutra-lifecycle.yml
+- type: DataModel
+  url: data-model/l-nutra-data-model.yml
+- type: RateLimits
+  url: rate-limits/l-nutra-rate-limits.yml
+- type: Plans
+  url: plans/l-nutra-plans-pricing.yml
+- type: Packages
+  url: packages/l-nutra-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/l-nutra-domain-security.yml
+
+x-enrichment:
+  date: '2026-08-23'
+  status: enriched
+  artifacts_added: 33
+  pass: local-v1

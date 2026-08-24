@@ -1,0 +1,47 @@
+generated: '2026-08-23'
+method: probed
+source: https://prolonlife.com/.well-known/ucp and live MCP response headers
+description: >-
+  L-Nutra publishes no versioning policy, no deprecation policy, no SLA, no status page and no
+  changelog of its own. The only lifecycle signal on the whole surface is the UCP protocol version
+  it negotiates, which is inherited from the Shopify platform rather than authored by L-Nutra.
+versioning:
+  style: dated protocol version
+  current: '2026-04-08'
+  supported:
+  - version: '2026-04-08'
+    profile: https://prolon-fmd-2020.myshopify.com/.well-known/ucp/2026-04-08
+  - version: '2026-01-23'
+    profile: https://prolon-fmd-2020.myshopify.com/.well-known/ucp/2026-01-23
+  negotiation: >-
+    Discovery at /.well-known/ucp lists a pinned profile per supported version; the served version
+    is echoed on every response as x-shopify-ucp-mcp-api-version.
+  authored_by: Shopify / ucp.dev, not L-Nutra.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No RFC 8594 Sunset or Deprecation header was observed and no deprecation policy page exists.
+    The previous protocol version 2026-01-23 is still served with no stated removal date.
+status_page:
+  published: false
+  note: >-
+    L-Nutra runs no status page. The storefronts are hosted on Shopify, whose status page at
+    status.shopify.com is a platform page, not an L-Nutra one, so no StatusPage pointer is emitted.
+sla:
+  published: false
+changelog:
+  published: false
+  note: No dated changelog exists for the storefronts or their agent surface.
+support:
+  email: customerservice@l-nutra.com
+  phone: '888-926-5370'
+  hours: Monday-Friday, 09:00-17:00 Central Time
+  email_response: 1-2 business days
+  source: https://prolonlife.com/policies/refund-policy
+observations:
+- >-
+  The corporate site l-nutra.com returned HTTP 500 for every path requested on 2026-08-23,
+  including its home page (WordPress fatal error behind Flywheel/5.1.0). It is recorded here as a
+  live operational defect, not as a lifecycle policy.

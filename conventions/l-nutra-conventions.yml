@@ -1,0 +1,132 @@
+generated: '2026-08-23'
+method: probed
+source: >-
+  live tools/list of https://prolonlife.com/api/ucp/mcp, https://prolonlife.com/llms.txt,
+  https://prolonlife.com/robots.txt and https://prolonlife.com/policies/refund-policy
+description: >-
+  Cross-cutting runtime semantics of L-Nutra's agentic-commerce surface. There is no OpenAPI, so
+  every statement below is read from a live MCP tool schema, the store's own agent instruction
+  document, or a published policy page.
+auth_style:
+  scheme: none
+  detail: >-
+    All MCP endpoints answer anonymously. UCP requires meta['ucp-agent'].profile — a URI describing
+    the calling agent — on every tool call, but it is a self-declaration, not a credential.
+  see: authentication/l-nutra-authentication.yml
+idempotency:
+  supported: true
+  mechanism: request field
+  field: "meta['idempotency-key']"
+  scope: complete_checkout only
+  required: true
+  retention: not published
+  evidence: >-
+    The complete_checkout inputSchema lists "idempotency-key" under meta.properties and names it in
+    meta.required alongside ucp-agent — an agent cannot finalise a purchase without supplying one.
+  gap: >-
+    No other write tool (create_cart, update_cart, create_checkout, update_checkout) accepts an
+    idempotency key, and no retention window or replay semantics are documented.
+pagination:
+  style: not published
+  detail: >-
+    search_catalog and lookup_catalog accept a catalog object; no page/cursor/limit convention is
+    described in the tool descriptions or in llms.txt.
+error_envelope:
+  style: JSON-RPC 2.0 error object
+  detail: >-
+    Errors surface as JSON-RPC errors from the MCP transport, plus in-band checkout errors returned
+    by complete_checkout ("or any errors encountered"). No error code registry is published.
+  problem_json: false
+money:
+  representation: integer minor units + ISO 4217 currency code
+  detail: >-
+    Every price is {"amount": <int>, "currency": "<ISO 4217>"} in the currency's minor units;
+    {"amount": 2500, "currency": "USD"} is $25.00. Agents must convert before quoting a buyer.
+  evidence: repeated verbatim in all thirteen UCP tool descriptions.
+buyer_context:
+  fields: [context.address_country, context.currency]
+  detail: llms.txt instructs agents to pass both for accurate pricing and availability.
+tracing:
+  request_id_header: x-request-id
+  evidence: observed on a live tools/list response from https://prolonlife.com/api/ucp/mcp.
+  version_header: 'x-shopify-ucp-mcp-api-version: 2026-04-08'
+versioning:
+  style: dated protocol version
+  current: '2026-04-08'
+  also_supported: ['2026-01-23']
+  negotiation: >-
+    /.well-known/ucp lists a version-pinned profile URL per supported version; the served version is
+    echoed on every MCP response.
+  see: lifecycle/l-nutra-lifecycle.yml
+rate_limit_signaling:
+  documented: true
+  headers_observed: none
+  detail: >-
+    llms.txt states the MCP endpoint is rate-limited per IP and that agents should back off on 429.
+    No RateLimit-* or Retry-After header was present on a live 200 response.
+  see: rate-limits/l-nutra-rate-limits.yml
+dry_run_mode:
+  supported: false
+  detail: >-
+    No test mode, sandbox store, or simulate flag is published. create_checkout and update_checkout
+    are effectively the rehearsal — they return totals, taxes and shipping without charging — but
+    nothing is labelled as a dry run.
+human_in_the_loop:
+  required: true
+  scope: payment completion
+  evidence: >-
+    Both robots.txt and llms.txt state that agents must not complete checkout, payment or order
+    placement without an explicit, contemporaneous human approval step.
+reversibility:
+  grade: verified
+  applies: true
+  detail: >-
+    Two reversal layers exist and they are governed by different rules. Inside the protocol, a cart
+    or a checkout can be cancelled at any point before completion. Once complete_checkout has run,
+    the published policy is that all sales are final — there is no refund path at all — and the
+    order-cancellation window is measured from the start of fulfilment, not from a fixed number of
+    days. This is a genuinely low-reversibility write surface and an agent must know that before
+    it calls complete_checkout, not after.
+  surfaces:
+  - write: create_cart / update_cart
+    reversal: cancel_cart
+    operation: cancel_cart
+    window: any time before checkout completion
+    source: mcp/l-nutra-prolonlife-ucp-tools-list.json
+  - write: create_checkout / update_checkout
+    reversal: cancel_checkout
+    operation: cancel_checkout
+    window: any time before complete_checkout succeeds
+    source: mcp/l-nutra-prolonlife-ucp-tools-list.json
+  - write: complete_checkout (order placement)
+    reversal: customer-service order cancellation
+    operation: none — no MCP tool reverses a completed order
+    window: >-
+      Only before the order enters the fulfilment process. "Orders that have entered the fulfilment
+      process are not eligible for cancellation" and "expedited orders begin processing immediately
+      and cannot be cancelled once placed." Requests go to customerservice@l-nutra.com or
+      888-926-5370, Mon-Fri 9:00-17:00 Central, with email answered in 1-2 business days.
+    docs: https://prolonlife.com/policies/refund-policy
+  - write: complete_checkout (subscription)
+    reversal: subscription cancellation via the customer portal or customer service
+    operation: none — no MCP tool cancels a subscription
+    window: at least 24 hours before the scheduled renewal date
+    docs: https://prolonlife.com/policies/refund-policy
+  - write: complete_checkout (returns / refunds)
+    reversal: none
+    operation: none
+    window: >-
+      No return window exists. "All Sales Are Final: We do not accept returns, whether the product
+      is open or unopened." Damaged or missing items must be reported within 14 days of delivery
+      for a resolution, which is a remediation path rather than a refund right.
+    docs: https://prolonlife.com/policies/refund-policy
+  gaps:
+  - The reversal paths for a completed order are human channels — phone and email — not API calls.
+  - l-nutraprofessional.com publishes no /policies/* documents at all, so the professional
+    storefront's reversal terms are not stated anywhere a machine can read.
+cross_links:
+  authentication: authentication/l-nutra-authentication.yml
+  scopes: scopes/l-nutra-scopes.yml
+  lifecycle: lifecycle/l-nutra-lifecycle.yml
+  rate_limits: rate-limits/l-nutra-rate-limits.yml
+  mcp: mcp/l-nutra-mcp.yml

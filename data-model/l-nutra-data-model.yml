@@ -1,0 +1,92 @@
+generated: '2026-08-23'
+method: derived
+source: mcp/l-nutra-prolonlife-ucp-tools-list.json
+description: >-
+  Entity-relationship graph derived from the JSON Schema 2020-12 input schemas of the thirteen UCP
+  tools live on https://prolonlife.com/api/ucp/mcp. There is no OpenAPI and no components.schemas
+  block, so every entity and field below was read out of a tool's own inputSchema. Identifiers on
+  this surface are Shopify global IDs (gid://shopify/<Type>/<n>), which is itself the id convention.
+id_scheme:
+  format: 'gid://shopify/<Type>/<numeric-id>'
+  examples_from_spec:
+  - 'gid://shopify/Order/123'
+  note: Confirmed in the get_order id description; the same GID form governs product and variant ids.
+entities:
+- name: Cart
+  source_tools: [create_cart, get_cart, update_cart, cancel_cart]
+  fields: [id, line_items, buyer, context]
+  relationships:
+  - has_many: LineItem
+    via: line_items
+  - has_one: Buyer
+    via: buyer
+- name: LineItem
+  source_tools: [create_cart, update_cart, create_checkout, update_checkout]
+  fields: [id, quantity, item]
+  required: [item, quantity]
+  relationships:
+  - belongs_to: ProductVariant
+    via: item.id
+- name: Checkout
+  source_tools: [create_checkout, get_checkout, update_checkout, complete_checkout, cancel_checkout]
+  fields: [id, line_items, buyer, payment, fulfillment, discounts, totals, context]
+  relationships:
+  - has_many: LineItem
+    via: line_items
+  - has_one: Buyer
+    via: buyer
+  - has_many: PaymentInstrument
+    via: payment.instruments
+  - has_one: Order
+    via: order id returned by complete_checkout
+- name: PaymentInstrument
+  source_tools: [create_checkout, update_checkout]
+  fields: [id, handler_id, type, billing_address]
+  required: [id, handler_id, type]
+  relationships:
+  - belongs_to: PaymentHandler
+    via: handler_id
+  note: >-
+    type is 'card' for credit/debit and 'token' for wallet payments (Google Pay, Apple Pay).
+- name: PaymentHandler
+  source: /.well-known/ucp payment_handlers
+  fields: [id, version, spec, schema, config]
+  instances:
+  - id: gpay
+    handler: com.google.pay
+    merchant_name: Prolon Life
+    merchant_origin: prolonlife.com
+    card_networks: [VISA, MASTERCARD, AMEX, DISCOVER]
+- name: Buyer
+  source_tools: [create_cart, create_checkout]
+  fields: [email, phone_number]
+- name: Order
+  source_tools: [get_order, complete_checkout]
+  fields: [id]
+  relationships:
+  - belongs_to: Checkout
+    via: the checkout that completed it
+- name: Product
+  source_tools: [search_catalog, lookup_catalog, get_product]
+  fields: [id, variants, pricing, availability]
+  relationships:
+  - has_many: ProductVariant
+    via: variants
+- name: ProductVariant
+  source_tools: [lookup_catalog, get_product]
+  fields: [id, price, availability]
+  relationships:
+  - belongs_to: Product
+- name: BuyerContext
+  source_tools: [search_catalog, create_cart, create_checkout]
+  fields: [address_country, address_region, postal_code, language, currency, intent]
+  note: >-
+    address_country is ISO 3166-1 alpha-2, language is IETF BCP 47, currency is ISO 4217.
+money:
+  representation: '{ amount: <integer minor units>, currency: <ISO 4217> }'
+  note: Stated in every tool description; see conventions/l-nutra-conventions.yml.
+gaps:
+- Response schemas are not published — MCP tools/list carries inputSchema only, so field-level
+  detail on Order, Product and Checkout responses is inferred from tool prose, not from a schema.
+- Subscription is a real entity in the business (the refund policy describes subscription renewal
+  and cancellation) but no MCP tool exposes it.

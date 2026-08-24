@@ -1,0 +1,150 @@
+generated: '2026-08-23'
+method: probed
+status: published
+source: https://prolonlife.com/llms.txt
+description: >-
+  L-Nutra operates no developer platform, but all three of its storefronts expose live, anonymous,
+  remote MCP endpoints. Each storefront serves a Universal Commerce Protocol (UCP) 2026-04-08
+  discovery profile at /.well-known/ucp naming an MCP transport endpoint at /api/ucp/mcp, and a
+  second Shopify Storefront MCP endpoint at /api/mcp. Every endpoint below was POSTed a real
+  tools/list JSON-RPC request on 2026-08-23 and returned HTTP 200 with a populated tool set and
+  full JSON Schema 2020-12 input schemas — no authentication, no OAuth challenge. The tool lists
+  are saved verbatim alongside this manifest.
+ownership: >-
+  These endpoints are Shopify platform infrastructure served under L-Nutra's own domains and scoped
+  to L-Nutra's own shops. Each /.well-known/ucp names the merchant shop that backs it —
+  prolon-fmd-2020.myshopify.com, l-nutra-health-2022.myshopify.com and prolon-pro.myshopify.com —
+  and the llms.txt served at each host names the store by its L-Nutra brand, so the catalog, cart,
+  checkout and order data behind every tool is L-Nutra's. The protocol implementation is Shopify's;
+  the commercial surface it exposes is L-Nutra's, the same relationship as a WordPress /wp-json
+  surface on a publisher's own domain.
+deployment:
+  mode: remote
+  endpoint: https://prolonlife.com/api/ucp/mcp
+  auth: none
+  verified: probed
+  checked: '2026-08-23'
+  note: >-
+    Anonymous over HTTPS. No install step, no package, no stdio variant published. Payment
+    completion is gated on contemporaneous human approval by store policy, not by a credential.
+servers:
+- name: prolon-life-ucp
+  host: prolonlife.com
+  endpoint: https://prolonlife.com/api/ucp/mcp
+  protocol: MCP over HTTP (UCP transport)
+  ucp_version: '2026-04-08'
+  ucp_supported_versions: ['2026-04-08', '2026-01-23']
+  backing_shop: prolon-fmd-2020.myshopify.com
+  auth: none
+  http_status: 200
+  tool_count: 13
+  tools_file: l-nutra-prolonlife-ucp-tools-list.json
+  response_header: 'x-shopify-ucp-mcp-api-version: 2026-04-08'
+- name: prolon-life-storefront
+  host: prolonlife.com
+  endpoint: https://prolonlife.com/api/mcp
+  protocol: MCP over HTTP (Shopify Storefront MCP)
+  auth: none
+  http_status: 200
+  tool_count: 5
+  tools_file: l-nutra-prolonlife-storefront-tools-list.json
+- name: l-nutra-health-ucp
+  host: l-nutrahealth.com
+  endpoint: https://l-nutrahealth.com/api/ucp/mcp
+  protocol: MCP over HTTP (UCP transport)
+  ucp_version: '2026-04-08'
+  ucp_supported_versions: ['2026-04-08', '2026-01-23']
+  backing_shop: l-nutra-health-2022.myshopify.com
+  auth: none
+  http_status: 200
+  tool_count: 13
+  tools_file: l-nutra-l-nutrahealth-ucp-tools-list.json
+- name: l-nutra-health-storefront
+  host: l-nutrahealth.com
+  endpoint: https://l-nutrahealth.com/api/mcp
+  protocol: MCP over HTTP (Shopify Storefront MCP)
+  auth: none
+  http_status: 200
+  tool_count: 1
+  tools_file: l-nutra-l-nutrahealth-storefront-tools-list.json
+  note: Configured narrowly — only search_shop_policies_and_faqs is exposed.
+- name: prolon-professional-ucp
+  host: l-nutraprofessional.com
+  endpoint: https://l-nutraprofessional.com/api/ucp/mcp
+  protocol: MCP over HTTP (UCP transport)
+  ucp_version: '2026-04-08'
+  ucp_supported_versions: ['2026-04-08', '2026-01-23']
+  backing_shop: prolon-pro.myshopify.com
+  auth: none
+  http_status: 200
+  tool_count: 13
+  tools_file: l-nutra-l-nutraprofessional-ucp-tools-list.json
+- name: prolon-professional-storefront
+  host: l-nutraprofessional.com
+  endpoint: https://l-nutraprofessional.com/api/mcp
+  protocol: MCP over HTTP (Shopify Storefront MCP)
+  auth: none
+  http_status: 200
+  tool_count: 1
+  tools_file: l-nutra-l-nutraprofessional-storefront-tools-list.json
+  note: Configured narrowly — only search_shop_policies_and_faqs is exposed.
+tools:
+- name: search_catalog
+  category: catalog
+  description: Search for products from the online store using natural language queries or specific filters.
+- name: lookup_catalog
+  category: catalog
+  description: Look up multiple products or variants by identifier in a single request.
+- name: get_product
+  category: catalog
+  description: Retrieve complete product detail by identifier, with variants, exact pricing and real-time availability.
+- name: create_cart
+  category: cart
+  description: Creates a new cart.
+- name: get_cart
+  category: cart
+  description: Get the cart contents.
+- name: update_cart
+  category: cart
+  description: Perform updates to a cart.
+- name: cancel_cart
+  category: cart
+  description: Cancels a cart.
+- name: create_checkout
+  category: checkout
+  description: Creates a checkout and returns line items, totals, discounts and taxes.
+- name: get_checkout
+  category: checkout
+  description: Returns details about the checkout, including line items, totals, discounts and taxes.
+- name: update_checkout
+  category: checkout
+  description: Updates a checkout — shipping address, shipping method, buyer details.
+- name: complete_checkout
+  category: checkout
+  description: >-
+    Completes a checkout and returns the order ID and Thank You Page URL. Requires a caller-supplied
+    meta.idempotency-key (declared required in the tool's own input schema).
+- name: cancel_checkout
+  category: checkout
+  description: Cancels a checkout.
+- name: get_order
+  category: order
+  description: Get the details of an order.
+storefront_mcp_tools:
+- name: search_catalog
+  hosts: [prolonlife.com]
+- name: get_cart
+  hosts: [prolonlife.com]
+- name: update_cart
+  hosts: [prolonlife.com]
+- name: get_product_details
+  hosts: [prolonlife.com]
+- name: search_shop_policies_and_faqs
+  hosts: [prolonlife.com, l-nutrahealth.com, l-nutraprofessional.com]
+constraints:
+- >-
+  Human approval is mandatory before payment. prolonlife.com/robots.txt and /llms.txt both state that
+  agents must not complete checkout, payment or order placement automatically without an explicit,
+  contemporaneous human approval step.
+- The MCP endpoint is rate-limited per IP; the published guidance is to back off on HTTP 429.
+- Pass context.address_country and context.currency for accurate pricing and availability.

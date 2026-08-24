@@ -1,0 +1,98 @@
+generated: '2026-08-23'
+method: derived
+source: >-
+  mcp/l-nutra-prolonlife-ucp-tools-list.json, mcp/l-nutra-prolonlife-storefront-tools-list.json and
+  the read-only REST surface documented in llms/l-nutra-llms.txt
+description: >-
+  L-Nutra publishes no OpenAPI, so this crosswalk binds the two divergent MCP surfaces to each other
+  and to the read-only JSON endpoints the store's own llms.txt documents. The three surfaces are
+  overlapping but not identical: the UCP endpoint is the only one that can transact, the Storefront
+  MCP endpoint is the only one that can answer policy and FAQ questions, and the documented
+  storefront JSON paths are the only surface reachable with a plain GET. No OpenAPI operationIds
+  exist, so `rest:` rows carry the documented HTTP path instead and confidence is set accordingly.
+surfaces:
+  openapi: none published
+  graphql: none published anonymously
+  mcp_ucp:
+    url: https://prolonlife.com/api/ucp/mcp
+    gated: false
+    tool_count: 13
+  mcp_storefront:
+    url: https://prolonlife.com/api/mcp
+    gated: false
+    tool_count: 5
+    note: >-
+      Returns only search_shop_policies_and_faqs on l-nutrahealth.com and l-nutraprofessional.com —
+      the catalog and cart tools are enabled on prolonlife.com alone.
+  rest_documented:
+    source: https://prolonlife.com/llms.txt
+    gated: false
+    note: Read-only Shopify storefront JSON paths, no authentication required.
+crosswalk:
+- tool: search_catalog
+  category: catalog
+  rest: ['GET /search?q={query}&type=product', 'GET /collections/all']
+  binding: semantic
+  confidence: medium
+  note: >-
+    Both return products matching a query, but the MCP tool accepts natural-language intent and
+    structured filters the storefront search URL does not expose.
+- tool: get_product
+  category: catalog
+  rest: ['GET /products/{handle}.json']
+  binding: semantic
+  confidence: medium
+  note: >-
+    The MCP tool resolves by product or variant identifier and returns real-time availability and
+    exact pricing; the JSON path resolves by handle only.
+- tool: lookup_catalog
+  category: catalog
+  rest: ['GET /collections/{handle}/products.json']
+  binding: partial
+  confidence: low
+  note: Batch identifier resolution has no direct REST equivalent; the collection JSON is the closest read.
+mcp_only:
+- tool: create_cart
+  reason: No anonymous REST cart-creation endpoint is documented on the storefront.
+- tool: get_cart
+  reason: Cart state is only reachable through MCP or a browser session.
+- tool: update_cart
+  reason: No documented REST equivalent.
+- tool: cancel_cart
+  reason: No documented REST equivalent.
+- tool: create_checkout
+  reason: Checkout is UCP-only; the store publishes no REST checkout API.
+- tool: get_checkout
+  reason: UCP-only.
+- tool: update_checkout
+  reason: UCP-only.
+- tool: complete_checkout
+  reason: >-
+    UCP-only, and the only write in the whole surface that requires an idempotency key. Payment
+    completion additionally requires contemporaneous human approval by store policy.
+- tool: cancel_checkout
+  reason: UCP-only; this is the reversal path for a checkout that has not completed.
+- tool: get_order
+  reason: UCP-only; there is no anonymous REST order lookup.
+- tool: search_shop_policies_and_faqs
+  reason: >-
+    Exposed only on the Shopify Storefront MCP endpoint (/api/mcp), not on the UCP endpoint. It is
+    the single tool the two narrower storefronts expose at all.
+- tool: get_product_details
+  reason: >-
+    Storefront-MCP-only naming of the product read; the UCP endpoint calls the equivalent get_product.
+rest_only:
+- path: GET /sitemap.xml
+  reason: Crawlable index of the store; no MCP tool returns it.
+- path: GET /agents.md
+  reason: Agent instruction document; served over HTTP only.
+- path: GET /policies/{policy}
+  reason: >-
+    Full policy text is served as HTML; the MCP surface only offers a search over policies and FAQs
+    via search_shop_policies_and_faqs, and only on the Storefront MCP endpoint.
+coverage:
+  mcp_tools_total: 14
+  mcp_tools_mapped_to_rest: 3
+  mcp_only: 12
+  rest_only: 3
+  openapi_operations: 0

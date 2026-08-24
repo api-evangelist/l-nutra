@@ -1,0 +1,23 @@
+generated: '2026-08-23'
+method: searched
+source: https://prolonlife.com/llms.txt
+description: >-
+  L-Nutra's agent instruction document states that the MCP endpoint is rate-limited per IP and that
+  agents should back off on HTTP 429, but publishes no number, window or burst. A live tools/list
+  response returned no RateLimit-*, X-RateLimit-* or Retry-After header, so an agent has no runtime
+  signal to read — only the instruction to retry after it has already been refused.
+limit_count: 0
+limits: []
+signaling:
+  status_code_on_exhaustion: 429
+  headers_returned: []
+  headers_observed_on_200: [x-request-id, x-shopify-ucp-mcp-api-version]
+  retry_guidance: 'Back off on 429 responses.'
+scope: per-IP
+endpoints:
+- https://prolonlife.com/api/ucp/mcp
+- https://l-nutrahealth.com/api/ucp/mcp
+- https://l-nutraprofessional.com/api/ucp/mcp
+note: >-
+  Honest zero: rate limiting is acknowledged in prose but no quantified limit is published anywhere
+  on an L-Nutra host, and no header exposes the remaining budget at runtime.

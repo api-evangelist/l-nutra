@@ -1,0 +1,31 @@
+generated: '2026-08-23'
+method: searched
+source: >-
+  registry.npmjs.org search (l-nutra, prolon, prolonlife, lnutra), pypi.org, and the L-Nutra
+  storefront documentation
+description: >-
+  No first-party client library exists in any public registry. L-Nutra ships no SDK, and its agent
+  surface is reached by speaking MCP directly to an HTTPS endpoint, so a client library is not part
+  of the model. Two near-miss packages were rejected on ownership grounds and are recorded so a
+  later run does not re-adopt them.
+package_count: 0
+packages: []
+rejected:
+- name: prolonreactcomponents
+  registry: npm
+  version: 2.2.0
+  published: '2026-08-20'
+  reason: >-
+    Describes itself as "Reusable components for prolon BMSnet solution" — Prolon Controls, an
+    HVAC building-management vendor. Unrelated to L-Nutra's ProLon nutrition product.
+- name: node-red-contrib-prolon
+  registry: npm
+  version: null
+  published: null
+  reason: >-
+    Node-RED nodes for Prolon Controls HVAC equipment. Same name collision, different company; not
+    queried further once the name collision was established.
+sdk_links_in_apis_yml: []
+note: >-
+  No SDKs pointer is emitted, because no first-party SDK exists. An empty finding here is the
+  correct one for a merchant whose only API surface is a hosted MCP endpoint.

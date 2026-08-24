@@ -1,0 +1,35 @@
+generated: '2026-08-23'
+method: generated
+source: >-
+  Grounded in the live MCP tool lists probed on 2026-08-23 (mcp/l-nutra-*-tools-list.json), the
+  provider's own /agents.md, and https://prolonlife.com/policies/refund-policy.
+description: >-
+  Packaged agent skills for L-Nutra's agentic-commerce surface. There is no OpenAPI to ground these
+  in, so every operation named is a real MCP tool returned by a live tools/list — none is invented.
+  The provider's own agent instruction document is saved verbatim alongside them.
+skills:
+- name: purchase-prolon-kit
+  file: l-nutra-purchase-prolon-kit.md
+  api: ProLon Life Agentic Commerce (UCP/MCP)
+  method: generated
+  operations: [search_catalog, get_product, create_cart, update_cart, create_checkout,
+    update_checkout, complete_checkout, cancel_checkout, get_order]
+  note: >-
+    Carries the human-approval gate and the reversibility warning — sales are final once
+    complete_checkout succeeds.
+- name: answer-store-questions
+  file: l-nutra-answer-store-questions.md
+  api: ProLon Life Agentic Commerce (UCP/MCP)
+  method: generated
+  operations: [search_shop_policies_and_faqs, search_catalog, get_product_details, get_product,
+    lookup_catalog]
+  note: Read-only; documents the divergence between the two MCP endpoints and across the three hosts.
+provider_published:
+- name: agents.md
+  file: l-nutra-provider-agents.md
+  method: searched
+  source: https://prolonlife.com/agents.md
+  http_status: 200
+  note: >-
+    The store's own canonical agent-facing description, saved verbatim. Also served at /AGENTS.md
+    and mirrored at /llms.txt.

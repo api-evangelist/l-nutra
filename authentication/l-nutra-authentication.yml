@@ -1,0 +1,62 @@
+generated: '2026-08-23'
+method: probed
+source: >-
+  https://prolonlife.com/.well-known/openid-configuration,
+  https://prolonlife.com/.well-known/oauth-authorization-server, and live tools/list probes of
+  https://prolonlife.com/api/ucp/mcp and https://prolonlife.com/api/mcp
+description: >-
+  L-Nutra has two distinct authentication postures and they are not the same. The agentic-commerce
+  MCP surface is completely anonymous — a tools/list POST to /api/ucp/mcp and /api/mcp on all three
+  storefronts returned HTTP 200 with a full tool set and no OAuth challenge, and there is no
+  /.well-known/oauth-protected-resource on any host. Separately, each storefront serves Shopify
+  customer-account OIDC discovery, an authorization-code + PKCE flow used by shoppers to sign into
+  their own account — that is a human login, not an API credential the store issues to developers.
+  L-Nutra publishes no API keys, no developer registration, and no client-credentials flow.
+schemes:
+- name: anonymous-mcp
+  type: none
+  applies_to:
+  - https://prolonlife.com/api/ucp/mcp
+  - https://prolonlife.com/api/mcp
+  - https://l-nutrahealth.com/api/ucp/mcp
+  - https://l-nutrahealth.com/api/mcp
+  - https://l-nutraprofessional.com/api/ucp/mcp
+  - https://l-nutraprofessional.com/api/mcp
+  evidence: tools/list returned HTTP 200 with a populated result on every endpoint, 2026-08-23.
+  note: >-
+    The only thing standing between an agent and a completed purchase is store policy, not a
+    credential — payment completion requires contemporaneous human approval per robots.txt and
+    llms.txt. UCP does require a meta['ucp-agent'].profile URI on every call, but that is an agent
+    self-description, not an authenticated identity.
+- name: shopify-customer-accounts-oidc
+  type: openIdConnect
+  applies_to:
+  - https://prolonlife.com
+  - https://l-nutrahealth.com
+  - https://l-nutraprofessional.com
+  issuer: https://shopify.com/authentication/<shop-id>
+  discovery: /.well-known/openid-configuration
+  authorization_endpoint: https://account.<storefront-domain>/authentication/oauth/authorize
+  token_endpoint: https://account.<storefront-domain>/authentication/oauth/token
+  end_session_endpoint: https://account.<storefront-domain>/authentication/logout
+  jwks_uri: https://account.<storefront-domain>/authentication/.well-known/jwks.json
+  response_types_supported: [code]
+  grant_types_supported:
+  - authorization_code
+  - refresh_token
+  - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+  code_challenge_methods_supported: [S256]
+  token_endpoint_auth_methods_supported: [client_secret_basic, client_secret_post]
+  id_token_signing_alg_values_supported: [RS256]
+  subject_types_supported: [public]
+  claims_supported: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
+  scopes: see scopes/l-nutra-scopes.yml
+  note: >-
+    Shopify-operated identity for the merchant's own customer accounts. The issuer is
+    shopify.com; only the OAuth endpoints are on an L-Nutra subdomain. No public client
+    registration is offered, so a third-party developer cannot obtain a client_id here.
+gaps:
+- No /.well-known/oauth-protected-resource on any host (RFC 9728), so the MCP endpoints declare no
+  protected-resource metadata — consistent with them being unauthenticated.
+- No API keys, no developer account, no documented credential issuance of any kind.
+- No documented auth page — the only auth surface described in prose is the shopper login.

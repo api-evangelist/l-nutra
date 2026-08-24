@@ -1,0 +1,24 @@
+generated: '2026-08-23'
+method: searched
+source: https://prolonlife.com/collections/all
+description: >-
+  L-Nutra sells physical nutrition products, not API access. Its MCP/UCP agent surface is free and
+  anonymous, and there is no developer plan, tier, quota, overage or API price list anywhere on any
+  L-Nutra host. Product prices exist on the storefronts and are readable through search_catalog and
+  get_product, but those are retail SKU prices, not plans attached to an API.
+plan_count: 0
+plans: []
+api_pricing:
+  model: free
+  detail: >-
+    No registration, no key, no metered charge. The only cost gate on the surface is the
+    human-approval requirement before payment, which is a policy control rather than a price.
+product_pricing:
+  published: true
+  machine_readable: true
+  surfaces:
+  - https://prolonlife.com/collections/all/products.json
+  - MCP tool search_catalog / get_product (real-time pricing and availability)
+  note: >-
+    Recorded for completeness. These are retail prices for ProLon kits and related products, not
+    API plans, and they are not counted as plans above.
