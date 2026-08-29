@@ -12,6 +12,17 @@ description: >-
   Universal Commerce Protocol (UCP) discovery profile at /.well-known/ucp, an anonymous MCP endpoint
   at /api/ucp/mcp exposing thirteen catalog, cart, checkout and order tools, a Shopify Storefront MCP
   endpoint at /api/mcp, and Shopify customer-account OpenID Connect discovery documents.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://prolonlife.com/cdn/shop/files/Prolon_Icon_light_green.png
 url: https://raw.githubusercontent.com/api-evangelist/l-nutra/refs/heads/main/apis.yml
 x-type: company
