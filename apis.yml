@@ -39,6 +39,17 @@ tags:
 - E-Commerce
 - Agentic Commerce
 - Universal Commerce Protocol
+- MCP
+- Shopify
+tags_raw:
+- Company
+- Nutrition
+- Health
+- Longevity
+- Consumer Products
+- E-Commerce
+- Agentic Commerce
+- Universal Commerce Protocol
 - Model Context Protocol
 - Shopify
 apis:
@@ -54,6 +65,11 @@ apis:
   humanURL: https://prolonlife.com/agents.md
   baseURL: https://prolonlife.com
   tags:
+  - Agentic Commerce
+  - MCP
+  - Universal Commerce Protocol
+  - E-Commerce
+  tags_raw:
   - Agentic Commerce
   - Model Context Protocol
   - Universal Commerce Protocol
@@ -79,6 +95,11 @@ apis:
   baseURL: https://l-nutrahealth.com
   tags:
   - Agentic Commerce
+  - MCP
+  - Universal Commerce Protocol
+  - Health
+  tags_raw:
+  - Agentic Commerce
   - Model Context Protocol
   - Universal Commerce Protocol
   - Health
@@ -100,6 +121,11 @@ apis:
   humanURL: https://l-nutraprofessional.com/agents.md
   baseURL: https://l-nutraprofessional.com
   tags:
+  - Agentic Commerce
+  - MCP
+  - Universal Commerce Protocol
+  - Healthcare Providers
+  tags_raw:
   - Agentic Commerce
   - Model Context Protocol
   - Universal Commerce Protocol
