@@ -23,6 +23,21 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  generated: '2026-09-03'
+  method: derived
 image: https://prolonlife.com/cdn/shop/files/Prolon_Icon_light_green.png
 url: https://raw.githubusercontent.com/api-evangelist/l-nutra/refs/heads/main/apis.yml
 x-type: company
