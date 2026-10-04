@@ -78,7 +78,6 @@ apis:
     Checkout completion requires contemporaneous human approval; the store's own robots.txt and
     llms.txt say so explicitly.
   humanURL: https://prolonlife.com/agents.md
-  baseURL: https://prolonlife.com
   tags:
   - Agentic Commerce
   - MCP
@@ -100,6 +99,9 @@ apis:
     url: https://prolonlife.com/policies/terms-of-service
   - type: PrivacyPolicy
     url: https://prolonlife.com/policies/privacy-policy
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - name: L-Nutra Health Agentic Commerce (UCP/MCP)
   description: >-
     The agent-facing commerce surface of L-Nutra Health, the employer / health-plan channel storefront.
@@ -127,6 +129,9 @@ apis:
     url: https://l-nutrahealth.com/policies/terms-of-service
   - type: PrivacyPolicy
     url: https://l-nutrahealth.com/policies/privacy-policy
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - name: ProLon Professional Agentic Commerce (UCP/MCP)
   description: >-
     The agent-facing commerce surface of L-Nutra Professional, the practitioner ordering storefront.
@@ -150,6 +155,9 @@ apis:
     url: mcp/l-nutra-mcp.yml
   - type: Documentation
     url: https://l-nutraprofessional.com/agents.md
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
