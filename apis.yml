@@ -44,7 +44,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-23'
-modified: '2026-08-23'
+modified: '2026-10-06'
 tags:
 - Company
 - Nutrition
@@ -164,6 +164,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- url: https://prolonlife.com/blogs/stories
+  type: Blog
+- url: https://prolonlife.com/blogs/stories.atom
+  type: BlogRSS
 - type: Website
   url: https://prolonlife.com/
 - type: Documentation
